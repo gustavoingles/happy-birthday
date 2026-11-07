@@ -75,6 +75,13 @@ body {
 
 img, svg { display: block; }
 
+a, button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.seta, .botao { transition: background-color .2s ease, color .2s ease, transform .12s ease; }
+
 h1, h2 {
   font-weight: 400;
   font-variation-settings: "SOFT" 100;
@@ -129,8 +136,12 @@ h2 {
   max-width: 60rem;
   margin: 0 auto;
   padding: clamp(64px, 13vh, 136px) 16px 0;
+  padding-top: clamp(64px, 13svh, 136px);
   text-align: center;
 }
+
+/* animações do cenário param quando a abertura sai da tela (poupa bateria) */
+.ceu.fora-da-tela .cenario * { animation-play-state: paused; }
 
 .manuscrito {
   margin: 0 0 .25em;
@@ -173,7 +184,8 @@ h1 {
   box-shadow: 0 8px 20px -10px rgba(91, 42, 58, .7);
   transition: background-color .2s ease;
 }
-.botao:hover { background: #6E3547; }
+@media (hover: hover) { .botao:hover { background: #6E3547; } }
+.botao:active { transform: scale(.97); }
 
 /* Cenário */
 .cenario {
@@ -498,7 +510,8 @@ html:not(.js) .controles { display: none; }
   cursor: pointer;
   transition: background-color .2s ease, color .2s ease;
 }
-.seta:hover { background: var(--sururu); color: var(--papel); }
+@media (hover: hover) { .seta:hover { background: var(--sururu); color: var(--papel); } }
+.seta:active { transform: scale(.92); }
 .seta svg {
   width: 22px;
   height: 22px;
@@ -529,7 +542,7 @@ html:not(.js) .controles { display: none; }
   background: var(--renda-linha);
   transition: transform .3s ease, background-color .3s ease;
 }
-.ponto:hover::before { background: var(--por-do-sol); }
+@media (hover: hover) { .ponto:hover::before { background: var(--por-do-sol); } }
 .ponto[aria-current="true"]::before {
   background: var(--sururu);
   transform: scale(1.35);
@@ -668,7 +681,9 @@ html:not(.js) .controles { display: none; }
   font-weight: 500;
   transition: background-color .2s ease;
 }
-.bolo:hover .bolo-rotulo { background: #6E3547; }
+@media (hover: hover) { .bolo:hover .bolo-rotulo { background: #6E3547; } }
+.bolo:active svg { transform: scale(.97); }
+.bolo svg { transition: transform .15s ease; }
 
 .chama {
   transform-box: view-box;
@@ -736,16 +751,79 @@ html:not(.js) .controles { display: none; }
    =========================================================== */
 
 @media (max-width: 760px) {
-  .palco {
-    --palco-h: clamp(430px, 68svh, 600px);
-    --vizinho: 76vw;
+  /* abertura: cabe inteira na área visível do Safari (390 × 664 no iPhone 13) */
+  .ceu {
+    --horizonte: 68%;
+    min-height: max(560px, 100svh);
   }
-  .polaroid img { max-width: 72vw; }
-  .ceu { --horizonte: 66%; }
-  .jangada { left: 41%; top: 12%; }
-  h1 { font-size: clamp(3.2rem, 15vw, 4.4rem); }
-  .sol { width: min(80vw, 340px); }
+  .ceu-texto {
+    padding-top: clamp(40px, 9vh, 96px);
+    padding-top: clamp(40px, 9svh, 96px);
+  }
+  h1 { font-size: clamp(3.1rem, 14.5vw, 4.2rem); }
+  .ceu-sub { margin: .8em auto 1.2em; }
+  .sol { width: min(78vw, 330px); }
+  .jangada { left: 40%; top: 15%; width: 52px; }
+  .coqueiro {
+    bottom: 3%;
+    height: clamp(170px, min(34vh, 56vw), 250px);
+    height: clamp(170px, min(34svh, 56vw), 250px);
+  }
   .coqueiro-fundo { display: none; }
+
+  /* álbum: polaroide ocupa quase a tela toda */
+  .album { padding-top: 40px; }
+  .album-cabeca { margin-bottom: 26px; }
+  .album-cabeca p { font-size: 1rem; }
+  .palco {
+    --palco-h: clamp(420px, calc(100vh - 150px), 640px);
+    --vizinho: 66vw;
+  }
+  .polaroid { padding: 9px 9px 0; }
+  .polaroid::before { top: -11px; width: 76px; height: 22px; }
+  .polaroid img {
+    max-width: 80vw;
+    max-height: calc(var(--palco-h) - 104px);
+  }
+  .polaroid figcaption {
+    padding: .3em .4em .5em;
+    font-size: 1.3rem;
+  }
+  .controles { gap: 4px; padding-top: 18px; }
+  .seta { width: 44px; height: 44px; }
+
+  /* carta: mais largura pro texto */
+  .carta-secao { padding-left: 10px; padding-right: 10px; }
+  .carta { padding-left: 20px; padding-right: 20px; }
+}
+
+@supports (height: 100svh) {
+  @media (max-width: 760px) {
+    .palco { --palco-h: clamp(420px, calc(100svh - 150px), 640px); }
+  }
+}
+
+/* celular deitado */
+@media (max-height: 500px) and (orientation: landscape) {
+  .ceu {
+    --horizonte: 76%;
+    min-height: max(340px, 100vh);
+    min-height: max(340px, 100svh);
+  }
+  .ceu-texto { padding-top: 22px; }
+  .manuscrito { font-size: 1.3rem; }
+  h1 { font-size: clamp(2.4rem, 6.4vw, 3.6rem); }
+  .ceu-sub { margin: .5em auto .9em; font-size: 1rem; }
+  .sol { width: 200px; }
+  .jangada { left: 30%; top: 12%; width: 48px; }
+  .coqueiro { bottom: 2%; height: clamp(150px, 62vh, 250px); }
+  .coqueiro-fundo { display: none; }
+
+  .palco { --palco-h: max(300px, calc(100vh - 24px)); --vizinho: 34vw; }
+  .polaroid { padding: 8px 8px 0; }
+  .polaroid::before { top: -10px; width: 70px; height: 20px; }
+  .polaroid img { max-width: 60vw; max-height: calc(var(--palco-h) - 96px); }
+  .polaroid figcaption { padding: .25em .4em .45em; font-size: 1.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

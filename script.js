@@ -166,6 +166,14 @@
     desenhar();
   }
 
+  /* pausa as ondas e a jangada quando a abertura sai da tela */
+  const ceu = document.querySelector('.ceu');
+  if (ceu && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      ceu.classList.toggle('fora-da-tela', !e.isIntersecting);
+    }).observe(ceu);
+  }
+
   /* ---------------------------------------------------------
      Bolo: soprar a vela
      --------------------------------------------------------- */

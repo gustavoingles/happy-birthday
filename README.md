@@ -8,6 +8,7 @@ style.css    visual
 script.js    carrossel e bolo
 fotos/       01.jpg … 10.jpg, em ordem cronológica (sem metadados/GPS)
 fonts/       Fraunces e Caveat (licença OFL)
+icone.png    ícone quando alguém salva o site na tela de início do iPhone
 ```
 
 ## Publicar
@@ -25,5 +26,3 @@ Para testar localmente: `python3 -m http.server` dentro da pasta e abra http://l
 - **Inclinação de cada polaroide**: `--giro` (foto) e `--fita` (fita adesiva) no atributo `style` do `<figure>`.
 - **Tempo do carrossel**: `INTERVALO` no `script.js` (em milissegundos).
 - **Prévia no WhatsApp**: depois de publicar, descomente a linha `og:image` no `<head>` com o endereço completo de uma foto.
-# happy-birthday
-# happy-birthday
